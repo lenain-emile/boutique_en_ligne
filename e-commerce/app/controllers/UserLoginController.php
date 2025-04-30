@@ -1,0 +1,63 @@
+<?php
+namespace App\Controllers;
+
+use App\Models\User;
+
+class UserLoginController
+{
+    public function login()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+
+            $user = User::findByUsername($username);
+
+            if ($user && password_verify($password, $user['password'])) {
+                session_start();
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = $user['role'];
+                header('Location: /e-commerce/index.php');
+                exit;
+            } else {
+                $error = "Nom d'utilisateur ou mot de passe incorrect.";
+                require __DIR__ . '/../views/users/utilisateur.php';
+            }
+        } else {
+            require __DIR__ . '/../views/users/utilisateur.php';
+        }
+    }
+
+    public function register()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $username = $_POST['username'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+
+            // Vérifier si l'utilisateur existe déjà
+            if (User::findByUsername($username)) {
+                $error = "Ce nom d'utilisateur est déjà pris.";
+                require __DIR__ . '/../views/users/register.php';
+                return;
+            }
+
+            // Créer un nouvel utilisateur
+            $user = new User();
+            $user->setUsername($username);
+            $user->setEmail($email);
+            $user->setPassword(password_hash($password, PASSWORD_BCRYPT));
+
+            if ($user->save()) {
+                header('Location: /e-commerce/utilisateur.php');
+                exit;
+            } else {
+                $error = "Erreur lors de l'inscription. Veuillez réessayer.";
+                require __DIR__ . '/../views/users/register.php';
+            }
+        } else {
+            require __DIR__ . '/../views/users/register.php';
+        }
+    }
+} 

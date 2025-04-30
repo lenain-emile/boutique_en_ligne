@@ -1,11 +1,10 @@
 <?php
+require_once 'app/config/autoloader.php';
 
 // Récupérer l'URL depuis la requête
 $url = '';
 if (isset($_GET['url'])) {
-    // Exploser l'URL en tableau
     $url = explode('/', filter_var($_GET['url'], FILTER_SANITIZE_URL));
-    // ici  explode est utilisé pour séparer  les  segments de l'URL  le delimiteur est le caractère '/'. sinon je peux utiliser  '-' avec preg_matchh '
 }
 
 // Récupérer la méthode HTTP
@@ -13,23 +12,95 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 // Contrôler la première valeur de l'URL
 if (empty($url[0]) || $url[0] == 'accueil') {
-    // Si l'URL est vide ou correspond à "accueil", afficher la page d'accueil
+    // Page d'accueil
     require_once 'app/views/home/accueil.php';
+
+} else if ($url[0] == 'register') {
+    // Gestion de l'inscription
+    $controller = new \App\Controllers\UserLoginController();
+    if ($method == 'POST') {
+        $controller->register();
+    } else {
+        require_once 'app/views/users/register.php';
+    }
+
+} else if ($url[0] == 'utilisateur.php') {
+    // Page de connexion
+    require_once 'app/views/users/utilisateur.php';
+
+} else if ($url[0] == 'login') {
+    // Gestion de la connexion
+    $controller = new \App\Controllers\UserLoginController();
+    if ($method == 'POST') {
+        $controller->login();
+    } else {
+        require_once 'app/views/users/utilisateur.php';
+    }
+
 } else if ($url[0] == 'products') {
-    // Si l'URL correspond à "produits" gérer les produits
-   echo 'w.e je sais pas quoi mettre ici';  
+    // Gestion des produits
+    if ($method == 'GET') {
+        if (isset($url[1]) && $url[1] == 'vetements-femme') {
+            // FEMME : /products/vetements-femme ou /products/vetements-femme/4
+            $controller = new \App\Controllers\ProductController();
+
+            if (isset($url[2]) && is_numeric($url[2])) {
+                // Détail produit femme
+                $controller->showProductDetail($url[2]);
+            } else {
+                // Liste des produits femme
+                $controller->showWomenall();
+            }
+        } elseif (isset($url[1]) && $url[1] == 'vetements-homme') {
+            // HOMME : /products/vetements-homme ou /products/vetements-homme/4
+            $controller = new \App\Controllers\ProductMenController();
+
+            if (isset($url[2]) && is_numeric($url[2])) {
+                // Détail produit homme
+                $controller->showProductDetail($url[2]);
+            } else {
+                // Liste des produits homme
+                $controller->showMenAll();
+            }
+        } else {
+            echo 'Liste générale des produits ou route non reconnue.';
+        }
+    }
+
+} else if ($url[0] == 'panier') {
+    // Gestion du panier
+    $controller = new \App\Controllers\CartController();
+    
+    if (isset($url[1])) {
+        if ($url[1] == 'add') {
+            $controller->add();
+        } else if ($url[1] == 'view') {
+            $controller->view();
+        } else {
+            echo 'Action du panier non reconnue.';
+        }
+    } else {
+        // Par défaut, afficher le panier
+        $controller->view();
+    }
+
 } else if ($url[0] == 'categorie') {
-    // Si l'URL correspond à "categorie" gérer les catégories
+    // Gestion des catégories
     if ($method == 'GET') {
         echo 'Afficher les catégories';
     }
+
 } else if ($url[0] == 'produit') {
-    // Si l'URL correspond à "produit" afficher un produit spécifique
-    if ($method == 'GET') {
-        echo 'Afficher un produit spécifique';
+    // Route alternative : /produit/4 (si tu veux la garder)
+    if ($method == 'GET' && isset($url[1])) {
+        $productId = (int) $url[1];
+        $controller = new \App\Controllers\ProductController();
+        $controller->showProductDetail($productId);
+    } else {
+        echo 'ID du produit manquant.';
     }
+
 } else {
-    // Si aucune correspondance afficher une erreur 404
-    require_once 'app/router/erreur404.html';   
+    // Page 404
+    require_once 'app/router/erreur404.html';
 }
- 
