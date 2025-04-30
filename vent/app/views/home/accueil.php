@@ -7,16 +7,7 @@
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="/index.php">Accueil</a></li>
-                <li><a href="/products.php">Produits</a></li>
-                <li><a href="/contact.php">Contact</a></li>
-                <li><a href="/about.php">À propos</a></li>
-            </ul>
-        </nav>
-    </header>
+  
 
     <main>
         <section class="hero">
