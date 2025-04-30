@@ -18,15 +18,18 @@
 
     <a href="/vent/products/vetements-homme">← Retour</a>
 
-
-
     <h3>Tailles disponibles :</h3>
     <?php if (!empty($sizes)): ?>
-        <ul>
-            <?php foreach ($sizes as $size): ?>
-                <li><?= htmlspecialchars($size['label']) ?></li>
-            <?php endforeach; ?>
-        </ul>
+        <form action="/vent/cart/add" method="POST">
+            <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+            <select name="size_id" required>
+                <option value="">Sélectionnez une taille</option>
+                <?php foreach ($sizes as $size): ?>
+                    <option value="<?= $size['id'] ?>"><?= htmlspecialchars($size['label']) ?></option>
+                <?php endforeach; ?>
+            </select>
+            <button type="submit">Ajouter au panier</button>
+        </form>
     <?php else: ?>
         <p>Aucune taille disponible.</p>
     <?php endif; ?>

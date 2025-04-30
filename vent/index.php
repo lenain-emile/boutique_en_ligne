@@ -45,6 +45,23 @@ if (empty($url[0]) || $url[0] == 'accueil') {
         }
     }
 
+} else if ($url[0] == 'panier') {
+    // Gestion du panier
+    $controller = new \App\Controllers\CartController();
+    
+    if (isset($url[1])) {
+        if ($url[1] == 'add') {
+            $controller->add();
+        } else if ($url[1] == 'view') {
+            $controller->view();
+        } else {
+            echo 'Action du panier non reconnue.';
+        }
+    } else {
+        // Par défaut, afficher le panier
+        $controller->view();
+    }
+
 } else if ($url[0] == 'categorie') {
     // Gestion des catégories
     if ($method == 'GET') {

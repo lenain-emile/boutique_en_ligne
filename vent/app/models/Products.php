@@ -36,7 +36,7 @@ class Products extends Database {
     public function getSizesByProductId($productId) {
         $db = $this->connect();
         $stmt = $db->prepare("
-            SELECT sizes.label 
+            SELECT sizes.id, sizes.label 
             FROM sizes
             INNER JOIN product_size ON product_size.size_id = sizes.id
             WHERE product_size.product_id = ?
