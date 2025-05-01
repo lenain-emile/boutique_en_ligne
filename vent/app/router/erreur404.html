@@ -1,0 +1,58 @@
+<?php
+// Titre de la page
+$title = "Page non trouvée";
+
+// Affichage de l'entête HTML
+echo "<!DOCTYPE html>";
+echo "<html lang='fr'>";
+echo "<head>";
+echo "<meta charset='UTF-8'>";
+echo "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
+echo "<title>$title</title>";
+echo "<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        text-align: center;
+    }
+    h1 {
+        font-size: 5rem;
+        color: #e74c3c;
+    }
+    p {
+        font-size: 1.2rem;
+    }
+    .error-container {
+        max-width: 600px;
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+</style>";
+echo "</head>";
+echo "<body>";
+
+echo "<div class='error-container'>";
+echo "<h1>404</h1>";
+echo "<p>Désolé, la page que vous recherchez n'existe pas.</p>";
+echo "<p><a href='/index.php'>Retour à la page d'accueil</a></p>";
+echo "</div>";
+
+echo "</body>";
+echo "</html>";
+?>

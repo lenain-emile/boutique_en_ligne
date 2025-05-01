@@ -42,5 +42,17 @@ class CartController {
         
         include_once __DIR__ . '/../views/cart/panier.php';
     }
+
+    public function clear() {
+        // Pour l'instant, on utilise un ID utilisateur fixe (à remplacer par l'ID de l'utilisateur connecté)
+        $userId = 1;
+        
+        $cartModel = new Cart();
+        $cartModel->clearCart($userId);
+        
+        // Rediriger vers la page du panier
+        header('Location: /vent/cart/view');
+        exit;
+    }
 }
 ?> 

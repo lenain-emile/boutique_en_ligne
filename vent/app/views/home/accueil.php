@@ -1,3 +1,4 @@
+<?php include_once __DIR__ . '/../layouts/header.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,29 +11,8 @@
   
 
     <main>
-        <section class="hero">
-            <h1>Bienvenue sur notre site e-commerce</h1>
-            <p>Découvrez nos produits de qualité au meilleur prix.</p>
-            <a href="/products.php" class="btn">Voir les produits</a>
-        </section>
-
-        <section class="featured-products">
-            <h2>Produits phares</h2>
-            <div class="product-list">
-                <!-- Exemple de produit -->
-                <div class="product-item">
-                    <img src="/assets/images/product1.jpg" alt="Produit 1">
-                    <h3>Produit 1</h3>
-                    <p>Prix: 20€</p>
-                    <a href="/product-details.php?id=1" class="btn">Voir le produit</a>
-                </div>
-                <!-- Ajouter d'autres produits ici -->
-            </div>
-        </section>
+        
+        <p>Bienvenue sur W.E NAME</p>
     </main>
-
-    <footer>
-        <p>&copy; 2023 E-commerce. Tous droits réservés.</p>
-    </footer>
 </body>
 </html>

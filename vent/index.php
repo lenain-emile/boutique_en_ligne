@@ -78,6 +78,25 @@ if (empty($url[0]) || $url[0] == 'accueil') {
         echo 'ID du produit manquant.';
     }
 
+} else if ($url[0] == 'cart') {
+    // Gestion du panier
+    $controller = new \App\Controllers\CartController();
+    
+    if (isset($url[1])) {
+        if ($url[1] == 'add') {
+            $controller->add();
+        } else if ($url[1] == 'view') {
+            $controller->view();
+        } else if ($url[1] == 'clear') {
+            $controller->clear();
+        } else {
+            echo 'Action du panier non reconnue.';
+        }
+    } else {
+        // Par défaut, afficher le panier
+        $controller->view();
+    }
+
 } else {
     // Page 404
     require_once 'app/router/erreur404.html';

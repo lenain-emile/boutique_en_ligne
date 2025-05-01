@@ -1,3 +1,4 @@
+<?php include_once __DIR__ . '/../layouts/header.php'; ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>

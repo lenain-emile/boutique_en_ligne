@@ -90,5 +90,26 @@ class Cart extends Database {
         
         return $items;
     }
+
+    public function clearCart($userId) {
+        $db = $this->connect();
+        
+        // Récupérer l'ID du panier de l'utilisateur
+        $stmt = $db->prepare("SELECT id FROM carts WHERE user_id = ?");
+        $stmt->execute([$userId]);
+        $cart = $stmt->fetch(\PDO::FETCH_ASSOC);
+        
+        if ($cart) {
+            // Supprimer d'abord les détails du panier
+            $stmt = $db->prepare("DELETE FROM cart_details WHERE cart_id = ?");
+            $stmt->execute([$cart['id']]);
+            
+            // Puis supprimer le panier lui-même
+            $stmt = $db->prepare("DELETE FROM carts WHERE id = ?");
+            $stmt->execute([$cart['id']]);
+        }
+        
+        return true;
+    }
 }
 ?> 

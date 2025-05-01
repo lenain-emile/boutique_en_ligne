@@ -1,3 +1,4 @@
+<?php include_once __DIR__ . '/../layouts/header.php'; ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -48,6 +49,21 @@
         .back-button:hover {
             background-color: #e0e0e0;
         }
+        .cart-actions {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .clear-cart-button {
+            padding: 8px 16px;
+            background-color: #f0f0f0;
+            color: #333;
+            text-decoration: none;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .clear-cart-button:hover {
+            background-color: #e0e0e0;
+        }
     </style>
 </head>
 <body>
@@ -74,6 +90,11 @@
             
             <div class="cart-total">
                 Total : <?= number_format($total, 2, ',', ' ') ?> €
+            </div>
+            <div class="cart-actions">
+                <form action="/vent/cart/clear" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir vider votre panier ?');">
+                    <button type="submit" class="clear-cart-button">Vider le panier</button>
+                </form>
             </div>
         <?php else: ?>
             <div class="empty-cart">
