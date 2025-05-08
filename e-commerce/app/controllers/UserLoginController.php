@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Models\Address;
 
 class UserLoginController
 {
@@ -60,4 +61,34 @@ class UserLoginController
             require __DIR__ . '/../views/users/register.php';
         }
     }
-} 
+
+    public function addAddress()
+    {
+        // Vérifier si l'utilisateur est connecté
+        session_start();
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /e-commerce/utilisateur.php');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $address = new Address();
+            $address->setFirstName($_POST['first_name']);
+            $address->setLastName($_POST['last_name']);
+            $address->setStreet($_POST['street']);
+            $address->setPostalCode($_POST['postal_code']);
+            $address->setPhone($_POST['phone']);
+            $address->setUserId($_SESSION['user_id']);
+
+            if ($address->save()) {
+                header('Location: /e-commerce/index.php');
+                exit;
+            } else {
+                $error = "Erreur lors de l'enregistrement de l'adresse.";
+                require __DIR__ . '/../views/address/add.php';
+            }
+        } else {
+            require __DIR__ . '/../views/address/add.php';
+        }
+    }
+}

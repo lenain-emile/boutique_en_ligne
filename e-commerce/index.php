@@ -100,6 +100,13 @@ if (empty($url[0]) || $url[0] == 'accueil') {
         echo 'ID du produit manquant.';
     }
 
+} else if ($url[0] == 'address') {
+    // Gestion des adresses
+    $controller = new \App\Controllers\UserLoginController();
+    if ($url[1] == 'add') {
+        $controller->addAddress();
+    }
+
 } else {
     // Page 404
     require_once 'app/router/erreur404.html';
