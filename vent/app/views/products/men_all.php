@@ -5,10 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vêtements pour hommes</title>
+    <link rel="stylesheet" href="/vent/public/assets/style/category-filter.css">
 </head>
 <body>
     <div class="product-detail">
         <h1>Vêtements pour hommes</h1>
+
+        <!-- Filtre de catégories -->
+        <div class="category-filter">
+            <form method="GET" action="/vent/products/vetements-homme">
+                <select name="category">
+                    <option value="">Toutes les catégories</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?= $category['id'] ?>" <?= isset($_GET['category']) && $_GET['category'] == $category['id'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($category['name']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <button type="submit">Filtrer</button>
+            </form>
+        </div>
 
         <?php if (!empty($products)): ?>
             <ul class="product-list">

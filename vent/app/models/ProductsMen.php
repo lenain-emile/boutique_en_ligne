@@ -47,5 +47,27 @@ class ProductsMen extends Database {
         $stmt->execute([$productId]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    public function getProductsByCategory($categoryId) {
+        $db = $this->connect();
+        $stmt = $db->prepare("SELECT * FROM products WHERE gender_id = 1 AND category_id = ?");
+        $stmt->execute([$categoryId]);
+        $products = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        
+        // Ajouter le chemin correct pour les images
+        foreach ($products as &$product) {
+            if (!empty($product['image'])) {
+                $product['image'] = '/vent/public/image/' . $product['image'];
+            }
+        }
+        
+        return $products;
+    }
+
+    public function getAllCategories() {
+        $db = $this->connect();
+        $stmt = $db->query("SELECT * FROM categories");
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
 ?>

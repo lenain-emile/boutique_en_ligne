@@ -6,7 +6,14 @@ use App\Models\Products;
 class ProductController {
     public function showWomenall() {
         $productModel = new Products();
-        $products = $productModel->getAllProducts();
+        $categories = $productModel->getAllCategories();
+        
+        // Récupérer la catégorie sélectionnée depuis l'URL
+        $categoryId = isset($_GET['category']) ? (int)$_GET['category'] : null;
+        
+        // Récupérer les produits en fonction de la catégorie sélectionnée
+        $products = $categoryId ? $productModel->getProductsByCategory($categoryId) : $productModel->getAllProducts();
+        
         include_once __DIR__ . '/../views/products/women_all.php';
     }
 
