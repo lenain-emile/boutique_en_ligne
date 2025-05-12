@@ -1,0 +1,71 @@
+/* Style du bouton de retour à l'accueil */
+.home-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #607D8B;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    transition: background-color 0.2s;
+}
+
+.home-btn:hover {
+    background-color: #455A64;
+    color: white;
+}
+
+/* Style de la carte */
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: none;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+.card-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+/* Style du formulaire */
+.form-label {
+    color: #333;
+    font-weight: 500;
+}
+
+.form-control {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.form-control:focus {
+    border-color: #607D8B;
+    box-shadow: 0 0 0 0.2rem rgba(96, 125, 139, 0.25);
+}
+
+/* Style du bouton de soumission */
+.btn-primary {
+    background-color: #607D8B;
+    border-color: #607D8B;
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #455A64;
+    border-color: #455A64;
+    transform: translateY(-1px);
+}
+
+/* Style des messages d'erreur */
+.alert-danger {
+    background-color: #ffebee;
+    border-color: #ffcdd2;
+    color: #c62828;
+} 

@@ -1,0 +1,62 @@
+/* Style du bouton de retour à l'accueil */
+.home-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #607D8B;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    transition: background-color 0.2s;
+}
+
+.home-btn:hover {
+    background-color: #455A64;
+    color: white;
+}
+
+/* Style du conteneur principal */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Style du menu du dashboard */
+.dashboard-menu {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.dashboard-menu h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.dashboard-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.dashboard-menu li {
+    margin-bottom: 15px;
+}
+
+.dashboard-menu a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    background-color: white;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.dashboard-menu a:hover {
+    background-color: #607D8B;
+    color: white;
+    transform: translateX(5px);
+} 
