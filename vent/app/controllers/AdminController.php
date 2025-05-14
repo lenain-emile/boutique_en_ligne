@@ -20,6 +20,7 @@ class AdminController {
     public function products() {
         $productModel = new Products();
         $productMenModel = new ProductsMen();
+        $sizesModel = new Sizes();
         
         // Récupérer tous les produits
         $womenProducts = $productModel->getAllProducts();
@@ -47,6 +48,7 @@ class AdminController {
             $categoryId = $_POST['category_id'];
             $genderId = $_POST['gender_id'];
             $selectedSizes = isset($_POST['sizes']) ? $_POST['sizes'] : [];
+            $stocks = isset($_POST['stocks']) ? $_POST['stocks'] : [];
             
             // Gérer l'upload d'image
             $image = '';
@@ -66,6 +68,13 @@ class AdminController {
             // Ajouter les tailles sélectionnées pour ce produit
             if ($productId && !empty($selectedSizes)) {
                 $productModel->addProductSizes($productId, $selectedSizes);
+                
+                // Mettre à jour les stocks pour chaque taille
+                foreach ($stocks as $sizeId => $quantity) {
+                    if (in_array($sizeId, $selectedSizes)) {
+                        $productModel->updateStock($productId, $sizeId, $quantity);
+                    }
+                }
             }
             
             header('Location: /vent/index.php?url=admin/products');
@@ -85,7 +94,7 @@ class AdminController {
         $categories = $productModel->getAllCategories();
         $sizes = $sizesModel->getAllSizes();
         
-        // Récupérer les tailles actuelles du produit
+        // Récupérer les tailles actuelles du produit avec leurs stocks
         $productSizes = $productModel->getProductSizes($id);
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -96,6 +105,7 @@ class AdminController {
             $categoryId = $_POST['category_id'];
             $genderId = $_POST['gender_id'];
             $selectedSizes = isset($_POST['sizes']) ? $_POST['sizes'] : [];
+            $stocks = isset($_POST['stocks']) ? $_POST['stocks'] : [];
             
             // Gérer l'upload d'image
             $image = $product['image'];
@@ -119,8 +129,13 @@ class AdminController {
             // Mettre à jour le produit
             $productModel->updateProduct($id, $name, $description, $price, $image, $categoryId, $genderId);
             
-            // Mettre à jour les tailles du produit
+            // Mettre à jour les tailles et les stocks du produit
             $productModel->updateProductSizes($id, $selectedSizes);
+            
+            // Mettre à jour les stocks pour chaque taille
+            foreach ($stocks as $sizeId => $quantity) {
+                $productModel->updateStock($id, $sizeId, $quantity);
+            }
             
             header('Location: /vent/index.php?url=admin/products');
             exit;

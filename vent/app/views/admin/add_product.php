@@ -51,6 +51,7 @@
                             <div class="size-checkbox">
                                 <input type="checkbox" id="size_<?= $size['id'] ?>" name="sizes[]" value="<?= $size['id'] ?>">
                                 <label for="size_<?= $size['id'] ?>"><?= htmlspecialchars($size['label']) ?></label>
+                                <input type="number" name="stocks[<?= $size['id'] ?>]" value="0" min="0" class="stock-input" placeholder="Stock">
                             </div>
                         <?php endforeach; ?>
                     </div>

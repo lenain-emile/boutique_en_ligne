@@ -26,6 +26,16 @@
                     <h3><?= htmlspecialchars($product['name']) ?></h3>
                     <p><?= htmlspecialchars($product['description']) ?></p>
                     <p>Prix: <?= number_format($product['price'], 2, ',', ' ') ?> €</p>
+                    <div class="stock-info">
+                        <h4>Stocks par taille :</h4>
+                        <?php
+                        $productSizes = $productModel->getProductSizes($product['id']);
+                        foreach ($productSizes as $sizeInfo):
+                            $size = $sizesModel->getSizeById($sizeInfo['size_id']);
+                        ?>
+                            <p><?= htmlspecialchars($size['label']) ?>: <?= $sizeInfo['stock'] ?></p>
+                        <?php endforeach; ?>
+                    </div>
                     <div class="admin-actions">
                         <a href="/vent/index.php?url=admin/modifier-produit/<?= $product['id'] ?>" class="edit-btn">Modifier</a>
                         <a href="/vent/index.php?url=admin/supprimer-produit/<?= $product['id'] ?>" class="delete-btn" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">Supprimer</a>
@@ -44,6 +54,16 @@
                     <h3><?= htmlspecialchars($product['name']) ?></h3>
                     <p><?= htmlspecialchars($product['description']) ?></p>
                     <p>Prix: <?= number_format($product['price'], 2, ',', ' ') ?> €</p>
+                    <div class="stock-info">
+                        <h4>Stocks par taille :</h4>
+                        <?php
+                        $productSizes = $productModel->getProductSizes($product['id']);
+                        foreach ($productSizes as $sizeInfo):
+                            $size = $sizesModel->getSizeById($sizeInfo['size_id']);
+                        ?>
+                            <p><?= htmlspecialchars($size['label']) ?>: <?= $sizeInfo['stock'] ?></p>
+                        <?php endforeach; ?>
+                    </div>
                     <div class="admin-actions">
                         <a href="/vent/index.php?url=admin/modifier-produit/<?= $product['id'] ?>" class="edit-btn">Modifier</a>
                         <a href="/vent/index.php?url=admin/supprimer-produit/<?= $product['id'] ?>" class="delete-btn" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">Supprimer</a>

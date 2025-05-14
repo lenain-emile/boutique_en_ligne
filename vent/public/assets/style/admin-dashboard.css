@@ -218,17 +218,43 @@ h2 {
 .size-checkbox {
     display: flex;
     align-items: center;
-    gap: 5px;
-    padding: 5px 10px;
+    margin-bottom: 10px;
+}
+
+.size-checkbox input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.size-checkbox label {
+    margin-right: 10px;
+    min-width: 40px;
+}
+
+/* Style des champs de stock */
+.stock-input {
+    width: 80px;
+    margin-left: 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Style de l'affichage des stocks */
+.stock-info {
+    margin: 10px 0;
+    padding: 10px;
     background-color: #f5f5f5;
     border-radius: 4px;
 }
 
-.size-checkbox input[type="checkbox"] {
-    margin: 0;
+.stock-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    color: #666;
 }
 
-.size-checkbox label {
-    margin: 0;
-    cursor: pointer;
+.stock-info p {
+    margin: 3px 0;
+    font-size: 13px;
+    color: #333;
 } 

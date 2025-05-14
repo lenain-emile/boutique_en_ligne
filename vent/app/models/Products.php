@@ -79,10 +79,16 @@ class Products extends Database {
 
     public function addProductSizes($productId, $sizeIds) {
         $db = $this->connect();
-        $stmt = $db->prepare("INSERT INTO product_size (product_id, size_id) VALUES (?, ?)");
+        $stmt = $db->prepare("INSERT INTO product_size (product_id, size_id, stock) VALUES (?, ?, 0)");
         
         foreach ($sizeIds as $sizeId) {
-            $stmt->execute([$productId, $sizeId]);
+            try {
+                $stmt->execute([$productId, $sizeId]);
+            } catch (\PDOException $e) {
+                // Si l'insertion échoue, on essaie de mettre à jour
+                $updateStmt = $db->prepare("UPDATE product_size SET stock = 0 WHERE product_id = ? AND size_id = ?");
+                $updateStmt->execute([$productId, $sizeId]);
+            }
         }
         
         return true;
@@ -91,30 +97,69 @@ class Products extends Database {
     public function getProductSizes($productId) {
         $db = $this->connect();
         $stmt = $db->prepare("
-            SELECT size_id 
+            SELECT size_id, stock 
             FROM product_size 
             WHERE product_id = ?
         ");
         $stmt->execute([$productId]);
-        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function updateProductSizes($productId, $newSizeIds) {
         $db = $this->connect();
         
+        // Récupérer les tailles actuelles avec leurs stocks
+        $currentSizes = $this->getProductSizes($productId);
+        $currentStocks = [];
+        foreach ($currentSizes as $size) {
+            $currentStocks[$size['size_id']] = $size['stock'];
+        }
+        
         // Supprimer toutes les tailles existantes
         $stmt = $db->prepare("DELETE FROM product_size WHERE product_id = ?");
         $stmt->execute([$productId]);
         
-        // Ajouter les nouvelles tailles
+        // Ajouter les nouvelles tailles avec leurs stocks
         if (!empty($newSizeIds)) {
-            $stmt = $db->prepare("INSERT INTO product_size (product_id, size_id) VALUES (?, ?)");
+            $stmt = $db->prepare("INSERT INTO product_size (product_id, size_id, stock) VALUES (?, ?, ?)");
             foreach ($newSizeIds as $sizeId) {
-                $stmt->execute([$productId, $sizeId]);
+                $stock = isset($currentStocks[$sizeId]) ? $currentStocks[$sizeId] : 0;
+                $stmt->execute([$productId, $sizeId, $stock]);
             }
         }
         
         return true;
+    }
+
+    public function updateStock($productId, $sizeId, $quantity) {
+        $db = $this->connect();
+        
+        // Vérifier si la combinaison product_id/size_id existe
+        $checkStmt = $db->prepare("SELECT COUNT(*) FROM product_size WHERE product_id = ? AND size_id = ?");
+        $checkStmt->execute([$productId, $sizeId]);
+        $exists = $checkStmt->fetchColumn();
+        
+        if ($exists) {
+            // Mettre à jour le stock existant
+            $stmt = $db->prepare("UPDATE product_size SET stock = ? WHERE product_id = ? AND size_id = ?");
+            return $stmt->execute([$quantity, $productId, $sizeId]);
+        } else {
+            // Créer une nouvelle entrée
+            $stmt = $db->prepare("INSERT INTO product_size (product_id, size_id, stock) VALUES (?, ?, ?)");
+            return $stmt->execute([$productId, $sizeId, $quantity]);
+        }
+    }
+
+    public function getStock($productId, $sizeId) {
+        $db = $this->connect();
+        $stmt = $db->prepare("
+            SELECT stock 
+            FROM product_size 
+            WHERE product_id = ? AND size_id = ?
+        ");
+        $stmt->execute([$productId, $sizeId]);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result ? $result['stock'] : 0;
     }
 
     public function updateProduct($id, $name, $description, $price, $image, $categoryId, $genderId) {

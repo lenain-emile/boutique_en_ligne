@@ -52,8 +52,12 @@
                         <?php foreach ($sizes as $size): ?>
                             <div class="size-checkbox">
                                 <input type="checkbox" id="size_<?= $size['id'] ?>" name="sizes[]" value="<?= $size['id'] ?>"
-                                    <?= in_array($size['id'], $productSizes) ? 'checked' : '' ?>>
+                                    <?= in_array($size['id'], array_column($productSizes, 'size_id')) ? 'checked' : '' ?>>
                                 <label for="size_<?= $size['id'] ?>"><?= htmlspecialchars($size['label']) ?></label>
+                                <input type="number" name="stocks[<?= $size['id'] ?>]" 
+                                       value="<?= isset($productSizes[array_search($size['id'], array_column($productSizes, 'size_id'))]) ? 
+                                              $productSizes[array_search($size['id'], array_column($productSizes, 'size_id'))]['stock'] : 0 ?>" 
+                                       min="0" class="stock-input" placeholder="Stock">
                             </div>
                         <?php endforeach; ?>
                     </div>

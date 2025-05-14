@@ -175,7 +175,6 @@ CREATE TABLE IF NOT EXISTS `products` (
   `image` varchar(255) DEFAULT NULL,
   `category_id` int NOT NULL,
   `gender_id` int NOT NULL,
-  `size_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
   KEY `gender_id` (`gender_id`)
