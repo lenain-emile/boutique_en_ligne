@@ -12,7 +12,7 @@
             <h1>Gestion des Produits</h1>
             <div class="action-buttons">
                 <a href="/vent/index.php" class="home-btn">Retour à l'accueil</a>
-                <a href="/vent/index.php?url=admin/add-product" class="add-product-btn">Ajouter un nouveau produit</a>
+                <a href="/vent/index.php?url=admin/ajouter-produit" class="add-product-btn">Ajouter un nouveau produit</a>
             </div>
         </div>
         
@@ -27,8 +27,8 @@
                     <p><?= htmlspecialchars($product['description']) ?></p>
                     <p>Prix: <?= number_format($product['price'], 2, ',', ' ') ?> €</p>
                     <div class="admin-actions">
-                        <a href="/vent/index.php?url=admin/edit-product/<?= $product['id'] ?>" class="edit-btn">Modifier</a>
-                        <a href="/vent/index.php?url=admin/delete-product/<?= $product['id'] ?>" class="delete-btn" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">Supprimer</a>
+                        <a href="/vent/index.php?url=admin/modifier-produit/<?= $product['id'] ?>" class="edit-btn">Modifier</a>
+                        <a href="/vent/index.php?url=admin/supprimer-produit/<?= $product['id'] ?>" class="delete-btn" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">Supprimer</a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -45,8 +45,8 @@
                     <p><?= htmlspecialchars($product['description']) ?></p>
                     <p>Prix: <?= number_format($product['price'], 2, ',', ' ') ?> €</p>
                     <div class="admin-actions">
-                        <a href="/vent/index.php?url=admin/edit-product/<?= $product['id'] ?>" class="edit-btn">Modifier</a>
-                        <a href="/vent/index.php?url=admin/delete-product/<?= $product['id'] ?>" class="delete-btn" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">Supprimer</a>
+                        <a href="/vent/index.php?url=admin/modifier-produit/<?= $product['id'] ?>" class="edit-btn">Modifier</a>
+                        <a href="/vent/index.php?url=admin/supprimer-produit/<?= $product['id'] ?>" class="delete-btn" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')">Supprimer</a>
                     </div>
                 </div>
             <?php endforeach; ?>

@@ -23,9 +23,9 @@ if (!isset($_SESSION['user_id'])) {
             <h2>Menu</h2>
             <ul>
                 <li><a href="/vent/index.php?url=address/add">Ajouter une adresse</a></li>
-                <li><a href="/vent/index.php?url=cart/view">Voir mon panier</a></li>
+                <li><a href="/vent/index.php?url=panier/voir">Voir mon panier</a></li>
                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                    <li><a href="/vent/index.php?url=admin/products">Gérer les produits</a></li>
+                    <li><a href="/vent/index.php?url=admin/produits">Gérer les produits</a></li>
                 <?php endif; ?>
                 <li><a href="/vent/index.php?url=user/logout">Déconnexion</a></li>
             </ul>

@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Models\Products;
 use App\Models\ProductsMen;
+use App\Models\Sizes;
 
 class AdminController {
     public function __construct() {
@@ -32,9 +33,11 @@ class AdminController {
 
     public function addProduct() {
         $productModel = new Products();
+        $sizesModel = new Sizes();
         
-        // Récupérer toutes les catégories
+        // Récupérer toutes les catégories et tailles
         $categories = $productModel->getAllCategories();
+        $sizes = $sizesModel->getAllSizes();
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Récupérer les données du formulaire
@@ -43,6 +46,7 @@ class AdminController {
             $price = $_POST['price'];
             $categoryId = $_POST['category_id'];
             $genderId = $_POST['gender_id'];
+            $selectedSizes = isset($_POST['sizes']) ? $_POST['sizes'] : [];
             
             // Gérer l'upload d'image
             $image = '';
@@ -56,8 +60,13 @@ class AdminController {
                 }
             }
             
-            // Ajouter le produit
-            $productModel->addProduct($name, $description, $price, $image, $categoryId, $genderId);
+            // Ajouter le produit et ses tailles
+            $productId = $productModel->addProduct($name, $description, $price, $image, $categoryId, $genderId);
+            
+            // Ajouter les tailles sélectionnées pour ce produit
+            if ($productId && !empty($selectedSizes)) {
+                $productModel->addProductSizes($productId, $selectedSizes);
+            }
             
             header('Location: /vent/index.php?url=admin/products');
             exit;
@@ -68,10 +77,16 @@ class AdminController {
 
     public function editProduct($id) {
         $productModel = new Products();
+        $sizesModel = new Sizes();
+        
         $product = $productModel->getProductById($id);
         
-        // Récupérer toutes les catégories
+        // Récupérer toutes les catégories et tailles
         $categories = $productModel->getAllCategories();
+        $sizes = $sizesModel->getAllSizes();
+        
+        // Récupérer les tailles actuelles du produit
+        $productSizes = $productModel->getProductSizes($id);
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Récupérer les données du formulaire
@@ -80,6 +95,7 @@ class AdminController {
             $price = $_POST['price'];
             $categoryId = $_POST['category_id'];
             $genderId = $_POST['gender_id'];
+            $selectedSizes = isset($_POST['sizes']) ? $_POST['sizes'] : [];
             
             // Gérer l'upload d'image
             $image = $product['image'];
@@ -102,6 +118,9 @@ class AdminController {
             
             // Mettre à jour le produit
             $productModel->updateProduct($id, $name, $description, $price, $image, $categoryId, $genderId);
+            
+            // Mettre à jour les tailles du produit
+            $productModel->updateProductSizes($id, $selectedSizes);
             
             header('Location: /vent/index.php?url=admin/products');
             exit;

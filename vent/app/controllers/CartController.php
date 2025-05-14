@@ -74,7 +74,7 @@ class CartController {
         $cartModel->clearCart($userId);
         
         // Rediriger vers la page du panier
-        header('Location: /vent/cart/view');
+        header('Location: /vent/index.php?url=panier/voir');
         exit;
     }
 }

@@ -21,7 +21,7 @@
 
     <h3>Tailles disponibles :</h3>
     <?php if (!empty($sizes)): ?>
-        <form action="/vent/cart/add" method="POST">
+        <form action="/vent/index.php?url=panier/ajouter" method="POST">
             <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
             <select name="size_id" required>
                 <option value="">Sélectionnez une taille</option>

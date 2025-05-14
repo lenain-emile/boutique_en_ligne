@@ -55,4 +55,25 @@ class UserController {
         header('Location: /vent/index.php?url=user/login');
         exit;
     }
+
+    public function orders() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Vérifier si l'utilisateur est connecté
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /vent/index.php?url=user/login');
+            exit;
+        }
+
+        $userId = $_SESSION['user_id'];
+        
+        // Récupérer les commandes de l'utilisateur
+        $orderModel = new \App\Models\Order();
+        $orders = $orderModel->getOrdersByUserId($userId);
+        
+        // Afficher la vue des commandes
+        require_once __DIR__ . '/../views/orders/commande.php';
+    }
 } 

@@ -30,6 +30,9 @@ if (empty($url[0]) || $url[0] == 'accueil') {
             case 'logout':
                 $controller->logout();
                 break;
+            case 'commandes':
+                $controller->orders();
+                break;
             default:
                 echo 'Action utilisateur non reconnue.';
         }
@@ -45,34 +48,34 @@ if (empty($url[0]) || $url[0] == 'accueil') {
     
     if (isset($url[1])) {
         switch($url[1]) {
-            case 'products':
+            case 'produits':
                 $controller->products();
                 break;
-            case 'add-product':
+            case 'ajouter-produit':
                 $controller->addProduct();
                 break;
-            case 'edit-product':
+            case 'modifier-produit':
                 if (isset($url[2])) {
                     $controller->editProduct($url[2]);
                 } else {
-                    header('Location: /vent/index.php?url=admin/products');
+                    header('Location: /vent/index.php?url=admin/produits');
                     exit;
                 }
                 break;
-            case 'delete-product':
+            case 'supprimer-produit':
                 if (isset($url[2])) {
                     $controller->deleteProduct($url[2]);
                 } else {
-                    header('Location: /vent/index.php?url=admin/products');
+                    header('Location: /vent/index.php?url=admin/produits');
                     exit;
                 }
                 break;
             default:
-                header('Location: /vent/index.php?url=admin/products');
+                header('Location: /vent/index.php?url=admin/produits');
                 exit;
         }
     } else {
-        header('Location: /vent/index.php?url=admin/products');
+        header('Location: /vent/index.php?url=admin/produits');
         exit;
     }
 
@@ -111,9 +114,9 @@ if (empty($url[0]) || $url[0] == 'accueil') {
     $controller = new \App\Controllers\CartController();
     
     if (isset($url[1])) {
-        if ($url[1] == 'add') {
+        if ($url[1] == 'ajouter') {
             $controller->add();
-        } else if ($url[1] == 'view') {
+        } else if ($url[1] == 'voir') {
             $controller->view();
         } else {
             echo 'Action du panier non reconnue.';
@@ -144,11 +147,11 @@ if (empty($url[0]) || $url[0] == 'accueil') {
     $controller = new \App\Controllers\CartController();
     
     if (isset($url[1])) {
-        if ($url[1] == 'add') {
+        if ($url[1] == 'ajouter') {
             $controller->add();
-        } else if ($url[1] == 'view') {
+        } else if ($url[1] == 'voir') {
             $controller->view();
-        } else if ($url[1] == 'clear') {
+        } else if ($url[1] == 'vider') {
             $controller->clear();
         } else {
             echo 'Action du panier non reconnue.';

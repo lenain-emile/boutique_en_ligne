@@ -11,7 +11,7 @@
         <h1>Ajouter un Nouveau Produit</h1>
         
         <div class="form-container">
-            <form action="/vent/index.php?url=admin/add-product" method="POST" enctype="multipart/form-data">
+            <form action="/vent/index.php?url=admin/ajouter-produit" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Nom du produit</label>
                     <input type="text" id="name" name="name" required>
@@ -42,6 +42,18 @@
                         <option value="1">Homme</option>
                         <option value="2">Femme</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tailles disponibles</label>
+                    <div class="sizes-container">
+                        <?php foreach ($sizes as $size): ?>
+                            <div class="size-checkbox">
+                                <input type="checkbox" id="size_<?= $size['id'] ?>" name="sizes[]" value="<?= $size['id'] ?>">
+                                <label for="size_<?= $size['id'] ?>"><?= htmlspecialchars($size['label']) ?></label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
                 
                 <div class="form-group">

@@ -11,7 +11,7 @@
         <h1>Modifier le Produit</h1>
         
         <div class="form-container">
-            <form action="/vent/index.php?url=admin/edit-product/<?= $product['id'] ?>" method="POST" enctype="multipart/form-data">
+            <form action="/vent/index.php?url=admin/modifier-produit/<?= $product['id'] ?>" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Nom du produit</label>
                     <input type="text" id="name" name="name" value="<?= htmlspecialchars($product['name']) ?>" required>
@@ -44,6 +44,19 @@
                         <option value="1" <?= $product['gender_id'] == 1 ? 'selected' : '' ?>>Homme</option>
                         <option value="2" <?= $product['gender_id'] == 2 ? 'selected' : '' ?>>Femme</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tailles disponibles</label>
+                    <div class="sizes-container">
+                        <?php foreach ($sizes as $size): ?>
+                            <div class="size-checkbox">
+                                <input type="checkbox" id="size_<?= $size['id'] ?>" name="sizes[]" value="<?= $size['id'] ?>"
+                                    <?= in_array($size['id'], $productSizes) ? 'checked' : '' ?>>
+                                <label for="size_<?= $size['id'] ?>"><?= htmlspecialchars($size['label']) ?></label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
                 
                 <div class="form-group">

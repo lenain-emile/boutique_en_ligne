@@ -45,11 +45,11 @@ if (session_status() === PHP_SESSION_NONE) {
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                                    <li><a class="dropdown-item" href="/vent/index.php?url=admin/products"><i class="fas fa-cog"></i> Gérer les produits</a></li>
+                                    <li><a class="dropdown-item" href="/vent/index.php?url=admin/produits"><i class="fas fa-cog"></i> Gérer les produits</a></li>
                                 <?php else: ?>
                                     <li><a class="dropdown-item" href="/vent/index.php?url=dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                                 <?php endif; ?>
-                                <li><a class="dropdown-item" href="/vent/index.php?url=user/orders"><i class="fas fa-shopping-bag"></i> Mes Commandes</a></li>
+                                <li><a class="dropdown-item" href="/vent/index.php?url=user/commandes"><i class="fas fa-shopping-bag"></i> Mes Commandes</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="/vent/index.php?url=user/logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
                             </ul>
@@ -66,7 +66,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     
                     <!-- Panier -->
                     <li class="nav-item">
-                        <a class="nav-link" href="/vent/index.php?url=cart/view">
+                        <a class="nav-link" href="/vent/index.php?url=panier/voir">
                             <i class="fas fa-shopping-cart"></i> Panier
                             <?php
                             if (isset($_SESSION['user_id'])) {

@@ -73,7 +73,48 @@ class Products extends Database {
             INSERT INTO products (name, description, price, image, category_id, gender_id)
             VALUES (?, ?, ?, ?, ?, ?)
         ");
-        return $stmt->execute([$name, $description, $price, $image, $categoryId, $genderId]);
+        $stmt->execute([$name, $description, $price, $image, $categoryId, $genderId]);
+        return $db->lastInsertId();
+    }
+
+    public function addProductSizes($productId, $sizeIds) {
+        $db = $this->connect();
+        $stmt = $db->prepare("INSERT INTO product_size (product_id, size_id) VALUES (?, ?)");
+        
+        foreach ($sizeIds as $sizeId) {
+            $stmt->execute([$productId, $sizeId]);
+        }
+        
+        return true;
+    }
+
+    public function getProductSizes($productId) {
+        $db = $this->connect();
+        $stmt = $db->prepare("
+            SELECT size_id 
+            FROM product_size 
+            WHERE product_id = ?
+        ");
+        $stmt->execute([$productId]);
+        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    public function updateProductSizes($productId, $newSizeIds) {
+        $db = $this->connect();
+        
+        // Supprimer toutes les tailles existantes
+        $stmt = $db->prepare("DELETE FROM product_size WHERE product_id = ?");
+        $stmt->execute([$productId]);
+        
+        // Ajouter les nouvelles tailles
+        if (!empty($newSizeIds)) {
+            $stmt = $db->prepare("INSERT INTO product_size (product_id, size_id) VALUES (?, ?)");
+            foreach ($newSizeIds as $sizeId) {
+                $stmt->execute([$productId, $sizeId]);
+            }
+        }
+        
+        return true;
     }
 
     public function updateProduct($id, $name, $description, $price, $image, $categoryId, $genderId) {
