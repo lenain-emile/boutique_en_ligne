@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Détails du produit</title>
+    <link rel="stylesheet" href="/vent/public/assets/style/product-detail.css">
 </head>
 <body>
     <h1><?= htmlspecialchars($product['name']) ?></h1>

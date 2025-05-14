@@ -13,7 +13,8 @@ $method = $_SERVER['REQUEST_METHOD'];
 // Contrôler la première valeur de l'URL
 if (empty($url[0]) || $url[0] == 'accueil') {
     // Page d'accueil
-    require_once 'app/views/home/accueil.php';
+    $controller = new \App\Controllers\HomeController();
+    $controller->index();
 
 } else if ($url[0] == 'user') {
     // Gestion des utilisateurs

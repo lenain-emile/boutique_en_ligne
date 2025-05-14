@@ -4,67 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Mon Panier</title>
-    <style>
-        .cart-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .cart-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-        }
-        .cart-item img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            margin-right: 20px;
-        }
-        .cart-item-details {
-            flex-grow: 1;
-        }
-        .cart-total {
-            margin-top: 20px;
-            text-align: right;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        .empty-cart {
-            text-align: center;
-            padding: 40px;
-        }
-        .back-button {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 8px 16px;
-            background-color: #f0f0f0;
-            color: #333;
-            text-decoration: none;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-        .back-button:hover {
-            background-color: #e0e0e0;
-        }
-        .cart-actions {
-            margin-top: 20px;
-            text-align: right;
-        }
-        .clear-cart-button {
-            padding: 8px 16px;
-            background-color: #f0f0f0;
-            color: #333;
-            text-decoration: none;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-        .clear-cart-button:hover {
-            background-color: #e0e0e0;
-        }
-    </style>
+    <link rel="stylesheet" href="/vent/public/assets/style/cart.css">
 </head>
 <body>
     <div class="cart-container">
