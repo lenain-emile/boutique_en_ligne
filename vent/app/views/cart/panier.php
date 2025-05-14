@@ -32,7 +32,7 @@
                 Total : <?= number_format($total, 2, ',', ' ') ?> €
             </div>
             <div class="cart-actions">
-                <form action="/vent/index.php?url=panier/vider" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir vider votre panier ?');">
+                <form action="/vent/index.php?url=cart/vider" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir vider votre panier ?');">
                     <button type="submit" class="clear-cart-button">Vider le panier</button>
                 </form>
             </div>

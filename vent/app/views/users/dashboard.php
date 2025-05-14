@@ -11,12 +11,13 @@ if (!isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de bord</title>
+    <title>Tableau de bord - W.E NAME</title>
     <link rel="stylesheet" href="/vent/public/assets/style/dashboard.css">
 </head>
 <body>
     <div class="container">
         <a href="/vent/index.php" class="home-btn">← Retour à l'accueil</a>
+        
         <h1>Bienvenue <?php echo htmlspecialchars($_SESSION['username']); ?></h1>
         
         <div class="dashboard-menu">
