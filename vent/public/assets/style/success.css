@@ -1,0 +1,31 @@
+/* Style pour la page de succès du paiement */
+.success-container {
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 40px;
+    background: #f8fff8;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.success-container h1 {
+    color: #27ae60;
+    margin-bottom: 20px;
+}
+.success-container p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+.success-container a {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #27ae60;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.success-container a:hover {
+    background: #219150;
+} 

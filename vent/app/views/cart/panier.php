@@ -35,6 +35,9 @@
                 <form action="/vent/index.php?url=cart/vider" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir vider votre panier ?');">
                     <button type="submit" class="clear-cart-button">Vider le panier</button>
                 </form>
+                <form action="/vent/index.php?url=panier/payer" method="POST" style="display:inline;">
+                    <button type="submit" class="pay-cart-button">Payer</button>
+                </form>
             </div>
         <?php else: ?>
             <div class="empty-cart">

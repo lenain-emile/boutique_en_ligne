@@ -119,6 +119,12 @@ if (empty($url[0]) || $url[0] == 'accueil') {
             $controller->add();
         } else if ($url[1] == 'voir') {
             $controller->view();
+        } else if ($url[1] == 'vider') {
+            $controller->clear();
+        } else if ($url[1] == 'payer') {
+            $controller->payer();
+        } else if ($url[1] == 'success') {
+            $controller->success();
         } else {
             echo 'Action du panier non reconnue.';
         }
