@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Commandes</title>
-    <link rel="stylesheet" href="/vent/public/assets/style/cart.css">
+    <title>Gestion des Commandes - Admin</title>
+    <link rel="stylesheet" href="/vent/public/assets/style/admin-dashboard.css">
     <style>
         .orders-container {
             max-width: 1200px;
@@ -29,6 +29,10 @@
         }
         .order-info {
             margin-bottom: 15px;
+        }
+        .order-info p {
+            margin: 5px 0;
+            color: #666;
         }
         .order-items {
             margin-top: 15px;
@@ -71,19 +75,6 @@
             background-color: #f8d7da;
             color: #721c24;
         }
-        .back-button {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 8px 16px;
-            background-color: #f0f0f0;
-            color: #333;
-            text-decoration: none;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-        .back-button:hover {
-            background-color: #e0e0e0;
-        }
         .admin-actions {
             margin-top: 15px;
             display: flex;
@@ -105,8 +96,13 @@
 </head>
 <body>
     <div class="orders-container">
-        <a href="/vent/index.php" class="back-button">← Retour à l'accueil</a>
-        <h1><?= isset($_SESSION['role']) && $_SESSION['role'] === 'admin' ? 'Toutes les Commandes' : 'Mes Commandes' ?></h1>
+        <div class="header-actions">
+            <h1>Gestion des Commandes</h1>
+            <div class="action-buttons">
+                <a href="/vent/index.php" class="home-btn">Retour à l'accueil</a>
+                <a href="/vent/index.php?url=admin/produits" class="add-product-btn">Gérer les produits</a>
+            </div>
+        </div>
         
         <?php if (!empty($orders)): ?>
             <?php foreach ($orders as $order): ?>
@@ -123,14 +119,9 @@
                         </div>
                     </div>
                     
-                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                        <div class="order-info">
-                            <h4>Client</h4>
-                            <p>Nom d'utilisateur: <?= htmlspecialchars($order['username']) ?></p>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <div class="order-address">
+                    <div class="order-info">
+                        <h4>Client</h4>
+                        <p>Nom d'utilisateur: <?= htmlspecialchars($order['username']) ?></p>
                         <h4>Adresse de livraison</h4>
                         <p>
                             <?= htmlspecialchars($order['first_name']) ?> <?= htmlspecialchars($order['last_name']) ?><br>
@@ -161,25 +152,21 @@
                         Total: <?= number_format($order['total'], 2, ',', ' ') ?> €
                     </div>
 
-                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                        <div class="admin-actions">
-                            <form action="/vent/index.php?url=admin/update-order-status" method="POST" style="display: inline;">
-                                <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
-                                <select name="status" onchange="this.form.submit()" class="update-status-btn">
-                                    <option value="pending" <?= $order['status'] === 'pending' ? 'selected' : '' ?>>En attente</option>
-                                    <option value="completed" <?= $order['status'] === 'completed' ? 'selected' : '' ?>>Complétée</option>
-                                    <option value="cancelled" <?= $order['status'] === 'cancelled' ? 'selected' : '' ?>>Annulée</option>
-                                </select>
-                            </form>
-                        </div>
-                    <?php endif; ?>
+                    <div class="admin-actions">
+                        <form action="/vent/index.php?url=admin/update-order-status" method="POST" style="display: inline;">
+                            <input type="hidden" name="order_id" value="<?= $order['id'] ?>">
+                            <select name="status" onchange="this.form.submit()" class="update-status-btn">
+                                <option value="pending" <?= $order['status'] === 'pending' ? 'selected' : '' ?>>En attente</option>
+                                <option value="completed" <?= $order['status'] === 'completed' ? 'selected' : '' ?>>Complétée</option>
+                                <option value="cancelled" <?= $order['status'] === 'cancelled' ? 'selected' : '' ?>>Annulée</option>
+                            </select>
+                        </form>
+                    </div>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p>Vous n'avez pas encore passé de commande.</p>
+            <p>Aucune commande n'a été passée.</p>
         <?php endif; ?>
     </div>
 </body>
-</html>
-
-
+</html> 

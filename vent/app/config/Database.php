@@ -8,7 +8,7 @@ class Database {
     private $host = 'localhost';
     private $dbname = 'e_shop';
     private $username = 'root';
-    private $password = '';
+    private $password = 'root';
 
     // Changer "protected" en "public"
     public function connect() {

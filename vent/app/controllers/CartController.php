@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Address;
 // Ajout Stripe
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -78,6 +79,22 @@ class CartController {
         exit;
     }
 
+    public function selectAddress() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /vent/index.php?url=user/login');
+            exit;
+        }
+
+        $userId = $_SESSION['user_id'];
+        $addressModel = new Address();
+        $addresses = $addressModel->findByUserId($userId);
+        
+        include_once __DIR__ . '/../views/cart/select-address.php';
+    }
+
     public function payer() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -86,13 +103,39 @@ class CartController {
             header('Location: /vent/index.php?url=user/login');
             exit;
         }
+
+        // Vérifier si une adresse a été sélectionnée
+        if (!isset($_POST['address_id'])) {
+            header('Location: /vent/index.php?url=panier/select-address');
+            exit;
+        }
+
         $userId = $_SESSION['user_id'];
+        $addressId = $_POST['address_id'];
+        
+        // Vérifier que l'adresse appartient bien à l'utilisateur
+        $addressModel = new Address();
+        $address = $addressModel->findByUserId($userId);
+        $addressFound = false;
+        foreach ($address as $addr) {
+            if ($addr['id'] == $addressId) {
+                $addressFound = true;
+                break;
+            }
+        }
+        
+        if (!$addressFound) {
+            header('Location: /vent/index.php?url=panier/select-address');
+            exit;
+        }
+
         $cartModel = new Cart();
         $cartItems = $cartModel->getCartContents($userId);
         if (empty($cartItems)) {
-            header('Location: /vent/index.php?url=cart/voir');
+            header('Location: /vent/index.php?url=panier/voir');
             exit;
         }
+
         // Configuration de la clé secrète Stripe
         \Stripe\Stripe::setApiKey('sk_test_51ROKttRpnHMCqzKBtxwA0U9UJPPeUi9mQ9mjPAskQ8BfxQlIXqIcFBySph6QQ222VlsOg3Ma4dHyE3mqSllVkiwu00nqmgfb3k');
         $line_items = [];
@@ -108,18 +151,56 @@ class CartController {
                 'quantity' => $item['quantity'],
             ];
         }
+
+        // Ajouter l'adresse de livraison aux métadonnées de la session
         $checkout_session = \Stripe\Checkout\Session::create([
             'payment_method_types' => ['card'],
             'line_items' => $line_items,
             'mode' => 'payment',
-            'success_url' => 'http://' . $_SERVER['HTTP_HOST'] . '/vent/index.php?url=panier/success',
-            'cancel_url' => 'http://' . $_SERVER['HTTP_HOST'] . '/vent/index.php?url=cart/voir',
+            'success_url' => 'http://' . $_SERVER['HTTP_HOST'] . '/vent/index.php?url=panier/success&session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => 'http://' . $_SERVER['HTTP_HOST'] . '/vent/index.php?url=panier/voir',
+            'metadata' => [
+                'address_id' => $addressId,
+                'user_id' => $userId
+            ]
         ]);
+
         header('Location: ' . $checkout_session->url);
         exit;
     }
 
     public function success() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /vent/index.php?url=user/login');
+            exit;
+        }
+
+        $userId = $_SESSION['user_id'];
+        $cartModel = new Cart();
+        $cartItems = $cartModel->getCartContents($userId);
+
+        if (!empty($cartItems)) {
+            // Récupérer l'adresse de livraison depuis la session Stripe
+            $sessionId = $_GET['session_id'] ?? null;
+            if ($sessionId) {
+                \Stripe\Stripe::setApiKey('sk_test_51ROKttRpnHMCqzKBtxwA0U9UJPPeUi9mQ9mjPAskQ8BfxQlIXqIcFBySph6QQ222VlsOg3Ma4dHyE3mqSllVkiwu00nqmgfb3k');
+                $session = \Stripe\Checkout\Session::retrieve($sessionId);
+                $addressId = $session->metadata->address_id;
+
+                // Créer la commande
+                $orderModel = new Order();
+                $orderId = $orderModel->createOrder($userId, $addressId, $cartItems);
+
+                if ($orderId) {
+                    // Vider le panier après la création de la commande
+                    $cartModel->clearCart($userId);
+                }
+            }
+        }
+
         include_once __DIR__ . '/../views/cart/success.php';
     }
 }

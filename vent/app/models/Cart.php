@@ -100,11 +100,11 @@ class Cart extends Database {
         $cart = $stmt->fetch(\PDO::FETCH_ASSOC);
         
         if ($cart) {
-            // Supprimer d'abord les détails du panier
+            // Supprimer tous les articles du panier
             $stmt = $db->prepare("DELETE FROM cart_details WHERE cart_id = ?");
             $stmt->execute([$cart['id']]);
             
-            // Puis supprimer le panier lui-même
+            // Supprimer le panier lui-même
             $stmt = $db->prepare("DELETE FROM carts WHERE id = ?");
             $stmt->execute([$cart['id']]);
         }

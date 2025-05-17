@@ -10,7 +10,7 @@
 <body>
     <div class="home-container">
         <section class="hero-section">
-            <h1>W.E NAME</h1>
+            <h1>Lume Studio</h1>
             <p>Découvrez notre collection de vêtements</p>
         </section>
 

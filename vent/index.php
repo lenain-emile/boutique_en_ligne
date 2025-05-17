@@ -125,6 +125,8 @@ if (empty($url[0]) || $url[0] == 'accueil') {
             $controller->payer();
         } else if ($url[1] == 'success') {
             $controller->success();
+        } else if ($url[1] == 'select-address') {
+            $controller->selectAddress();
         } else {
             echo 'Action du panier non reconnue.';
         }

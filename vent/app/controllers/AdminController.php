@@ -4,6 +4,10 @@ namespace App\Controllers;
 use App\Models\Products;
 use App\Models\ProductsMen;
 use App\Models\Sizes;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Size;
 
 class AdminController {
     public function __construct() {
@@ -162,6 +166,49 @@ class AdminController {
         }
         
         header('Location: /vent/index.php?url=admin/products');
+        exit;
+    }
+
+    public function orders() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Vérifier si l'utilisateur est connecté et est admin
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: /vent/index.php?url=user/login');
+            exit;
+        }
+
+        $orderModel = new Order();
+        $orders = $orderModel->getAllOrders();
+        
+        include_once __DIR__ . '/../views/admin/orders.php';
+    }
+
+    public function updateOrderStatus() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Vérifier si l'utilisateur est connecté et est admin
+        if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header('Location: /vent/index.php?url=user/login');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $orderId = $_POST['order_id'] ?? null;
+            $status = $_POST['status'] ?? null;
+
+            if ($orderId && $status) {
+                $orderModel = new Order();
+                $orderModel->updateOrderStatus($orderId, $status);
+            }
+        }
+
+        // Rediriger vers la page des commandes
+        header('Location: /vent/index.php?url=admin/orders');
         exit;
     }
 } 

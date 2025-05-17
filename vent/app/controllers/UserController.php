@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use App\Models\Order;
 
 class UserController {
     public function login() {
@@ -68,10 +69,15 @@ class UserController {
         }
 
         $userId = $_SESSION['user_id'];
+        $orderModel = new Order();
         
-        // Récupérer les commandes de l'utilisateur
-        $orderModel = new \App\Models\Order();
-        $orders = $orderModel->getOrdersByUserId($userId);
+        // Si l'utilisateur est admin, afficher toutes les commandes
+        if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+            $orders = $orderModel->getAllOrders();
+        } else {
+            // Sinon, afficher uniquement les commandes de l'utilisateur
+            $orders = $orderModel->getOrdersByUserId($userId);
+        }
         
         // Afficher la vue des commandes
         require_once __DIR__ . '/../views/orders/commande.php';
