@@ -33,16 +33,25 @@ class UserController {
         session_start();
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user = new User();
-            $user->setUsername($_POST['username']);
-            $user->setEmail($_POST['email']);
-            $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
-            
-            if ($user->save()) {
-                header('Location: /vent/index.php?url=user/login');
-                exit;
-            } else {
-                $error = "Erreur lors de l'inscription";
+            try {
+                // Vérifier si l'email existe déjà
+                if (User::findByEmail($_POST['email'])) {
+                    $error = "Cet email est déjà utilisé. Veuillez utiliser une autre adresse email.";
+                    require_once __DIR__ . '/../views/users/register.php';
+                    return;
+                }
+
+                $user = new User();
+                $user->setUsername($_POST['username']);
+                $user->setEmail($_POST['email']);
+                $user->setPassword(password_hash($_POST['password'], PASSWORD_DEFAULT));
+                
+                if ($user->save()) {
+                    header('Location: /vent/index.php?url=user/login');
+                    exit;
+                }
+            } catch (\Exception $e) {
+                $error = $e->getMessage();
                 require_once __DIR__ . '/../views/users/register.php';
             }
         } else {
